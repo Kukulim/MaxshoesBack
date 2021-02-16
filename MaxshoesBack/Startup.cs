@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MaxshoesBack.Services.EmailService;
+using System.Net.Http.Headers;
 
 namespace MaxshoesBack
 {
@@ -32,12 +34,15 @@ namespace MaxshoesBack
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MaxDb"));
             });
+
+            MailConfigSection mailConfigSection = Configuration.GetSection("mailConfigSection").Get<MailConfigSection>();
+            services.AddSingleton(mailConfigSection);
 
             services.AddScoped<IUserServices, UserServices>();
             services.AddSingleton<IJwtAuthManager, JwtAuthManager>();
@@ -63,6 +68,13 @@ namespace MaxshoesBack
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.FromMinutes(1)
                 };
+            });
+
+            services.AddHttpClient<IEmailService, MailgunEmailService>(cfg =>
+            {
+                cfg.BaseAddress = new Uri("https://api.mailgun.net/");
+                cfg.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                    Convert.ToBase64String(Encoding.UTF8.GetBytes($"api:{mailConfigSection.MailgunKey}")));
             });
 
             services.AddCors(options =>

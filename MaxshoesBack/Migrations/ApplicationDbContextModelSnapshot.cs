@@ -19,9 +19,10 @@ namespace MaxshoesBack.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MaxshoesBack.Models.Notification", b =>
+            modelBuilder.Entity("MaxshoesBack.Models.UserModels.Notification", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -43,9 +44,10 @@ namespace MaxshoesBack.Migrations
                     b.ToTable("Notification");
                 });
 
-            modelBuilder.Entity("MaxshoesBack.Models.User", b =>
+            modelBuilder.Entity("MaxshoesBack.Models.UserModels.User", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
@@ -57,6 +59,9 @@ namespace MaxshoesBack.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
@@ -65,14 +70,14 @@ namespace MaxshoesBack.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MaxshoesBack.Models.Notification", b =>
+            modelBuilder.Entity("MaxshoesBack.Models.UserModels.Notification", b =>
                 {
-                    b.HasOne("MaxshoesBack.Models.User", null)
+                    b.HasOne("MaxshoesBack.Models.UserModels.User", null)
                         .WithMany("Notifications")
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MaxshoesBack.Models.User", b =>
+            modelBuilder.Entity("MaxshoesBack.Models.UserModels.User", b =>
                 {
                     b.Navigation("Notifications");
                 });

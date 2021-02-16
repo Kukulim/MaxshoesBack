@@ -10,6 +10,7 @@ namespace MaxshoesBack.Models.UserModels
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        public string Role { get; set; } = UserRoles.Customer;
 
         public bool IsEmailConfirmed { get; set; } = false;
 

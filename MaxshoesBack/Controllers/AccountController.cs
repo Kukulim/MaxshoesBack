@@ -1,6 +1,7 @@
 ﻿using MaxshoesBack.JwtAuth;
 using MaxshoesBack.Models.AccountModels;
 using MaxshoesBack.Models.UserModels;
+using MaxshoesBack.Services.EmailService;
 using MaxshoesBack.Services.UserServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -21,15 +22,14 @@ namespace MaxshoesBack.Controllers
     {
         private readonly IUserServices _userService;
         private readonly IJwtAuthManager _jwtAuthManager;
-
-        //private readonly IEmailService _emailSender;
+        private readonly IEmailService _emailSender;
         private readonly IConfiguration _configuration;
 
-        public AccountController(IUserServices userService, IJwtAuthManager jwtAuthManager, IConfiguration configuration)
+        public AccountController(IUserServices userService, IJwtAuthManager jwtAuthManager, IEmailService emailSender, IConfiguration configuration)
         {
             _userService = userService;
             _jwtAuthManager = jwtAuthManager;
-            //_emailSender = emailSender;
+            _emailSender = emailSender;
             _configuration = configuration;
         }
         [AllowAnonymous]
@@ -143,7 +143,7 @@ namespace MaxshoesBack.Controllers
 
             string Url = $"{_configuration["appUrl"]}/api/account/confirmemail?UserName={request.UserName}&token={ConfirmToken}";
 
-            //await _emailSender.SendEmailAsync(request.UserEmail, "Confirm Email - ReactApp", "<h1>Hello from React Web</h1>" + $"<p> please confirm email by <a href='{Url}'>Click here!</a></p>");
+            await _emailSender.SendEmailAsync(request.UserEmail, "Confirm Email - Maxshoes", "<h1>Hello from Max Shoes</h1>" + $"<p> please confirm email by <a href='{Url}'>Click here!</a></p>");
 
             return Ok();
         }
@@ -175,7 +175,7 @@ namespace MaxshoesBack.Controllers
 
             string Url = $"{_configuration["appUrl"]}/api/account/passwordreset?UserEmail={request.Email}&token={ConfirmToken}";
 
-            //await _emailSender.SendEmailAsync(request.Email, "Reset Password - ReactApp", "<h1>Hello from React Web</h1>" + $"<p> to reset your password: <a href='{Url}'>Click here!</a></p>");
+            await _emailSender.SendEmailAsync(request.Email, "Reset Password - Maxshoes", "<h1>Hello from Max shoes</h1>" + $"<p> to reset your password: <a href='{Url}'>Click here!</a></p>");
 
             return Ok();
         }
@@ -193,7 +193,7 @@ namespace MaxshoesBack.Controllers
             if (CurrentUser.Email == UserEmail)
             {
                 CurrentUser.Password = _jwtAuthManager.GenerateTemporaryPasswordString();
-                //await _emailSender.SendEmailAsync(UserEmail, "Reset Password - ReactApp", $"Your new temporary password: '{CurrentUser.Password}'");
+                await _emailSender.SendEmailAsync(UserEmail, "Reset Password - Maxshoes", $"Your new temporary password: '{CurrentUser.Password}'");
                 _userService.Edit(CurrentUser);
                 return Ok();
             }
@@ -229,72 +229,5 @@ namespace MaxshoesBack.Controllers
             }
         }
 
-        //[HttpPost("impersonation")]
-        //[Authorize(Roles = UserRoles.Admin)]
-        //public ActionResult Impersonate([FromBody] ImpersonationRequest request)
-        //{
-        //    var userName = User.Identity.Name;
-        //    _logger.LogInformation($"User [{userName}] is trying to impersonate [{request.UserName}].");
-
-        //    var impersonatedRole = _userService.GetUserRole(request.UserName);
-        //    if (string.IsNullOrWhiteSpace(impersonatedRole))
-        //    {
-        //        _logger.LogInformation($"User [{userName}] failed to impersonate [{request.UserName}] due to the target user not found.");
-        //        return BadRequest($"The target user [{request.UserName}] is not found.");
-        //    }
-        //    if (impersonatedRole == UserRoles.Admin)
-        //    {
-        //        _logger.LogInformation($"User [{userName}] is not allowed to impersonate another Admin.");
-        //        return BadRequest("This action is not supported.");
-        //    }
-
-        //    var claims = new[]
-        //    {
-        //        new Claim(ClaimTypes.Name,request.UserName),
-        //        new Claim(ClaimTypes.Role, impersonatedRole),
-        //        new Claim("OriginalUserName", userName)
-        //    };
-
-        //    var jwtResult = _jwtAuthManager.GenerateTokens(request.UserName, claims, DateTime.Now);
-        //    _logger.LogInformation($"User [{request.UserName}] is impersonating [{request.UserName}] in the system.");
-        //    return Ok(new LoginResult
-        //    {
-        //        UserName = request.UserName,
-        //        Role = impersonatedRole,
-        //        OriginalUserName = userName,
-        //        AccessToken = jwtResult.AccessToken,
-        //        RefreshToken = jwtResult.RefreshToken.TokenString
-        //    });
-        //}
-
-        //[HttpPost("stop-impersonation")]
-        //public ActionResult StopImpersonation()
-        //{
-        //    var userName = User.Identity.Name;
-        //    var originalUserName = User.FindFirst("OriginalUserName")?.Value;
-        //    if (string.IsNullOrWhiteSpace(originalUserName))
-        //    {
-        //        return BadRequest("You are not impersonating anyone.");
-        //    }
-        //    _logger.LogInformation($"User [{originalUserName}] is trying to stop impersonate [{userName}].");
-
-        //    var role = _userService.GetUserRole(originalUserName);
-        //    var claims = new[]
-        //    {
-        //        new Claim(ClaimTypes.Name,originalUserName),
-        //        new Claim(ClaimTypes.Role, role)
-        //    };
-
-        //    var jwtResult = _jwtAuthManager.GenerateTokens(originalUserName, claims, DateTime.Now);
-        //    _logger.LogInformation($"User [{originalUserName}] has stopped impersonation.");
-        //    return Ok(new LoginResult
-        //    {
-        //        UserName = originalUserName,
-        //        Role = role,
-        //        OriginalUserName = null,
-        //        AccessToken = jwtResult.AccessToken,
-        //        RefreshToken = jwtResult.RefreshToken.TokenString
-        //    });
-        //}
     }
 }
