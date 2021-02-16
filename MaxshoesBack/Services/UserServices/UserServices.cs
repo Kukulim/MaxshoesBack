@@ -28,7 +28,7 @@ namespace MaxshoesBack.Services.UserServices
 
         public void Delete(User user)
         {
-            var toDelete = context.Users.Where(r => r.Id == user.Id).FirstOrDefault();
+            var toDelete = context.Users.Where(u => u.UserName == user.UserName || u.Email == user.Email || u.Password == user.Password).FirstOrDefault();
             context.Users.Remove(toDelete);
         }
 

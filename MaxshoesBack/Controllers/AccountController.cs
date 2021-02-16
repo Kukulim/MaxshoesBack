@@ -79,31 +79,20 @@ namespace MaxshoesBack.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name,CurrentUser.UserName),
-                new Claim(ClaimTypes.Email, CurrentUser.Email)
+                new Claim(ClaimTypes.Email, CurrentUser.Email),
+                new Claim(ClaimTypes.Role, CurrentUser.Role)
             };
 
             var jwtResult = _jwtAuthManager.GenerateTokens(CurrentUser.UserName, claims, DateTime.Now);
             return Ok(new LoginResult
             {
                 UserId = CurrentUser.Id,
+                Role = CurrentUser.Role,
                 UserName = CurrentUser.UserName,
                 AccessToken = jwtResult.AccessToken,
                 RefreshToken = jwtResult.RefreshToken.TokenString,
                 Email = CurrentUser.Email,
                 IsEmailConfirmed = CurrentUser.IsEmailConfirmed,
-            });
-        }
-
-        [HttpGet("user")]
-        //[Authorize]
-        [AllowAnonymous]
-        public ActionResult GetCurrentUser()
-        {
-            return Ok(new LoginResult
-            {
-                UserName = User.Identity.Name,
-                Role = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty,
-                OriginalUserName = User.FindFirst("OriginalUserName")?.Value
             });
         }
 
@@ -127,6 +116,7 @@ namespace MaxshoesBack.Controllers
             }
             var UserToRemove = new User { UserName = request.UserName, Password = request.Password, Email = request.UserEmail };
             _userService.Delete(UserToRemove);
+            _userService.Complete();
             return Ok();
         }
 

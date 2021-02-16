@@ -44,6 +44,16 @@ namespace MaxshoesBack.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "IsEmailConfirmed", "Password", "Role", "UserName" },
+                values: new object[] { "b4cf53c0-1057-409d-8ef5-d834dc984064", "Employee1@test.pl", true, "Employee1", "Employee", "Employee1" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "IsEmailConfirmed", "Password", "Role", "UserName" },
+                values: new object[] { "7b7332c0-68f7-4034-8e8f-28a19829d59a", "Employee2@test.pl", true, "Employee2", "Employee", "Employee2" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Notification_UserId",
                 table: "Notification",

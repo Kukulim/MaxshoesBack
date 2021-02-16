@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MaxshoesBack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210216125354_init")]
+    [Migration("20210216151226_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,26 @@ namespace MaxshoesBack.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b4cf53c0-1057-409d-8ef5-d834dc984064",
+                            Email = "Employee1@test.pl",
+                            IsEmailConfirmed = true,
+                            Password = "Employee1",
+                            Role = "Employee",
+                            UserName = "Employee1"
+                        },
+                        new
+                        {
+                            Id = "7b7332c0-68f7-4034-8e8f-28a19829d59a",
+                            Email = "Employee2@test.pl",
+                            IsEmailConfirmed = true,
+                            Password = "Employee2",
+                            Role = "Employee",
+                            UserName = "Employee2"
+                        });
                 });
 
             modelBuilder.Entity("MaxshoesBack.Models.UserModels.Notification", b =>
