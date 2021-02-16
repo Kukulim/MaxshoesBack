@@ -1,9 +1,5 @@
-﻿using MaxshoesBack.Models;
+﻿using MaxshoesBack.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MaxshoesBack.AppDbContext
 {
@@ -14,6 +10,5 @@ namespace MaxshoesBack.AppDbContext
         }
 
         public DbSet<User> Users { get; set; }
-
     }
 }

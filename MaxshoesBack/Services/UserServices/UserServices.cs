@@ -1,9 +1,8 @@
 ﻿using MaxshoesBack.AppDbContext;
-using MaxshoesBack.Models;
+using MaxshoesBack.Models.UserModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MaxshoesBack.Services.UserServices
 {
