@@ -33,12 +33,6 @@ namespace MaxshoesBack.Controllers
             _configuration = configuration;
         }
         [AllowAnonymous]
-        [HttpGet("test")]
-        public async Task<ActionResult> Test()
-        {
-            return Ok("test");
-        }
-        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -56,6 +50,7 @@ namespace MaxshoesBack.Controllers
                     Email = request.Email
                 };
                 _userService.Create(newUser);
+                _userService.Complete();
 
                 var confirmEmail = new ConfirmEmailRequest { UserEmail = request.Email, UserName = request.UserName };
                 await SendConfirmEmail(confirmEmail);
@@ -100,7 +95,8 @@ namespace MaxshoesBack.Controllers
         }
 
         [HttpGet("user")]
-        [Authorize]
+        //[Authorize]
+        [AllowAnonymous]
         public ActionResult GetCurrentUser()
         {
             return Ok(new LoginResult
@@ -115,8 +111,6 @@ namespace MaxshoesBack.Controllers
         [Authorize]
         public ActionResult Logout()
         {
-            // optionally "revoke" JWT token on the server side --> add the current token to a block-list
-            // https://github.com/auth0/node-jsonwebtoken/issues/375
 
             var userName = User.Identity.Name;
             _jwtAuthManager.RemoveRefreshTokenByUserName(userName);
