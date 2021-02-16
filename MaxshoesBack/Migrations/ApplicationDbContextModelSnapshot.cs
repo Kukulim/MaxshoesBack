@@ -72,19 +72,19 @@ namespace MaxshoesBack.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b4cf53c0-1057-409d-8ef5-d834dc984064",
+                            Id = "c006ff84-293a-43eb-ad73-e999f7cef947",
                             Email = "Employee1@test.pl",
                             IsEmailConfirmed = true,
-                            Password = "Employee1",
+                            Password = "$2a$11$AvQ1DXZUXF6ZfOb6Q3R.7.fCWtFBx3lvwWY1ReaNGSCaN9OMouZ26",
                             Role = "Employee",
                             UserName = "Employee1"
                         },
                         new
                         {
-                            Id = "7b7332c0-68f7-4034-8e8f-28a19829d59a",
+                            Id = "5052f1c4-c16c-461e-99c9-270ffba33e13",
                             Email = "Employee2@test.pl",
                             IsEmailConfirmed = true,
-                            Password = "Employee2",
+                            Password = "$2a$11$wHex25HW6vYlMflv0zAfWO90Bom7BmIMurunUakHTB/sILKftxnxu",
                             Role = "Employee",
                             UserName = "Employee2"
                         });

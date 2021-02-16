@@ -1,6 +1,7 @@
 ﻿using MaxshoesBack.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 using System;
+using BC = BCrypt.Net.BCrypt;
 
 namespace MaxshoesBack.AppDbContext
 {
@@ -21,7 +22,7 @@ namespace MaxshoesBack.AppDbContext
                     UserName = "Employee1",
                     IsEmailConfirmed = true,
                     Email = "Employee1@test.pl",
-                    Password = "Employee1",
+                    Password = BC.HashPassword("Employee1"),
                     Role = UserRoles.Employee
                 },
                 new User
@@ -30,7 +31,7 @@ namespace MaxshoesBack.AppDbContext
                     UserName = "Employee2",
                     IsEmailConfirmed = true,
                     Email = "Employee2@test.pl",
-                    Password = "Employee2",
+                    Password = BC.HashPassword("Employee2"),
                     Role = UserRoles.Employee
                 }
 

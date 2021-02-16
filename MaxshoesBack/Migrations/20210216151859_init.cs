@@ -47,12 +47,12 @@ namespace MaxshoesBack.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "IsEmailConfirmed", "Password", "Role", "UserName" },
-                values: new object[] { "b4cf53c0-1057-409d-8ef5-d834dc984064", "Employee1@test.pl", true, "Employee1", "Employee", "Employee1" });
+                values: new object[] { "c006ff84-293a-43eb-ad73-e999f7cef947", "Employee1@test.pl", true, "$2a$11$AvQ1DXZUXF6ZfOb6Q3R.7.fCWtFBx3lvwWY1ReaNGSCaN9OMouZ26", "Employee", "Employee1" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "IsEmailConfirmed", "Password", "Role", "UserName" },
-                values: new object[] { "7b7332c0-68f7-4034-8e8f-28a19829d59a", "Employee2@test.pl", true, "Employee2", "Employee", "Employee2" });
+                values: new object[] { "5052f1c4-c16c-461e-99c9-270ffba33e13", "Employee2@test.pl", true, "$2a$11$wHex25HW6vYlMflv0zAfWO90Bom7BmIMurunUakHTB/sILKftxnxu", "Employee", "Employee2" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notification_UserId",
