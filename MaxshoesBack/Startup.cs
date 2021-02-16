@@ -32,7 +32,7 @@ namespace MaxshoesBack
 
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseSqlServer(
-                    @"Server=(localdb)\mssqllocaldb;Database=MaxstoreDB;Trusted_Connection=True;");
+                    Configuration.GetConnectionString("MaxDb"));
             });
 
             services.AddScoped<IUserServices, UserServices>();
