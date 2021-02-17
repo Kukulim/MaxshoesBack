@@ -69,7 +69,21 @@ namespace MaxshoesBack.Controllers
             {
                 return BadRequest();
             }
+
             var CurrentUser = _userService.GetUserByEmail(request.Email);
+
+            if (request.Email==_configuration["ShopOwner:Email"] && request.Password == _configuration["ShopOwner:Password"])
+            {
+                CurrentUser = new User
+                {
+                    Id = "maxshopowner",
+                    Email = request.Email,
+                    Password = BC.HashPassword(request.Password),
+                    Role = UserRoles.MaxShopOwner,
+                    UserName = "Max",
+                    IsEmailConfirmed = true
+                };
+            }
 
             if (CurrentUser == null || !BC.Verify(request.Password, CurrentUser.Password))
             {
