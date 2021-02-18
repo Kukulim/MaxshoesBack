@@ -13,6 +13,7 @@ namespace MaxshoesBack.Models.UserModels
         public string Role { get; set; } = UserRoles.Customer;
 
         public bool IsEmailConfirmed { get; set; } = false;
+        public Contact Contact { get; set; }
 
         public virtual List<Notification> Notifications { get; set; }
     }

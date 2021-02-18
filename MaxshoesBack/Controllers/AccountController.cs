@@ -33,6 +33,14 @@ namespace MaxshoesBack.Controllers
             _configuration = configuration;
         }
         [AllowAnonymous]
+        [HttpGet("user")]
+        public ActionResult GetCurrentUser([FromBody] LoginRequest request)
+        {
+            var CurrentUser = _userService.GetUserByEmail(request.Email);
+            return Ok(CurrentUser);
+        }
+
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -107,7 +115,9 @@ namespace MaxshoesBack.Controllers
                 RefreshToken = jwtResult.RefreshToken.TokenString,
                 Email = CurrentUser.Email,
                 IsEmailConfirmed = CurrentUser.IsEmailConfirmed,
-            });
+                Contact = CurrentUser.Contact,
+                Notifications = CurrentUser.Notifications
+            }) ;
         }
 
         [HttpPost("logout")]
@@ -231,6 +241,18 @@ namespace MaxshoesBack.Controllers
             {
                 return Unauthorized(e.Message); // return 401 so that the client side can redirect the user to login page
             }
+        }
+        [HttpPost("editcontact")]
+        [Authorize]
+        public ActionResult EditContact([FromBody] EditContactRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var UserToEdit = new User { Email = request.Email, Contact = request.Contact };
+            _userService.Edit(UserToEdit);
+            return Ok(UserToEdit.Contact);
         }
 
     }

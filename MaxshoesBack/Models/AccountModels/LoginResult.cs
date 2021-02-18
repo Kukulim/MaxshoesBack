@@ -16,5 +16,6 @@ namespace MaxshoesBack.Controllers
         public string Email { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public List<Notification> Notifications { get; set; }
+        public Contact Contact { get; set; }
     }
 }
