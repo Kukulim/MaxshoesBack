@@ -55,7 +55,8 @@ namespace MaxshoesBack.Controllers
                 {
                     UserName = request.UserName,
                     Password = BC.HashPassword(request.Password),
-                    Email = request.Email
+                    Email = request.Email,
+                    Contact = new Contact()
                 };
                 _userService.Create(newUser);
                 _userService.Complete();
@@ -270,10 +271,11 @@ namespace MaxshoesBack.Controllers
             {
                 return BadRequest();
             }
-            var UserToEdit = new User { Email = request.Email, Contact = request.Contact };
+            var UserToEdit = _userService.GetUserByEmail(request.Email);
+            UserToEdit.Contact = request.Contact;
             _userService.Edit(UserToEdit);
             _userService.Complete();
-            return Ok(UserToEdit.Contact);
+            return Ok();
         }
 
     }

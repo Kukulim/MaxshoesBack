@@ -15,27 +15,6 @@ namespace MaxshoesBack.AppDbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<User>().HasData(
-            //    new User
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        UserName = "Employee1",
-            //        IsEmailConfirmed = true,
-            //        Email = "Employee1@test.pl",
-            //        Password = BC.HashPassword("Employee1"),
-            //        Role = UserRoles.Employee
-            //    },
-            //    new User
-            //    {
-            //        Id = Guid.NewGuid().ToString(),
-            //        UserName = "Employee2",
-            //        IsEmailConfirmed = true,
-            //        Email = "Employee2@test.pl",
-            //        Password = BC.HashPassword("Employee2"),
-            //        Role = UserRoles.Employee
-            //    }
-
-            //); ;
             modelBuilder.Entity<User>(b =>
             {
                 b.HasData(new User
