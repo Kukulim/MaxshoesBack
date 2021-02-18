@@ -174,6 +174,7 @@ namespace MaxshoesBack.Controllers
             var CurrentUser = _userService.GetUserByEmail(AcceptedEmail);
             CurrentUser.IsEmailConfirmed = true;
             _userService.Edit(CurrentUser);
+            _userService.Complete();
             return Ok();
         }
 
@@ -209,6 +210,25 @@ namespace MaxshoesBack.Controllers
                 CurrentUser.Password = _jwtAuthManager.GenerateTemporaryPasswordString();
                 await _emailSender.SendEmailAsync(UserEmail, "Reset Password - Maxshoes", $"Your new temporary password: '{CurrentUser.Password}'");
                 _userService.Edit(CurrentUser);
+                _userService.Complete();
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("ChangePassword")]
+        public ActionResult ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var CurrentUser = _userService.GetUserByEmail(request.Email);
+            if (BC.Verify(request.OldPassword, CurrentUser.Password))
+            {
+                CurrentUser.Password = BC.HashPassword(request.NewPassword);
+                _userService.Edit(CurrentUser);
+                _userService.Complete();
                 return Ok();
             }
             return BadRequest();
@@ -252,6 +272,7 @@ namespace MaxshoesBack.Controllers
             }
             var UserToEdit = new User { Email = request.Email, Contact = request.Contact };
             _userService.Edit(UserToEdit);
+            _userService.Complete();
             return Ok(UserToEdit.Contact);
         }
 
