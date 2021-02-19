@@ -216,7 +216,7 @@ namespace MaxshoesBack.Controllers
             }
             return BadRequest();
         }
-
+        [Authorize]
         [HttpPost("ChangePassword")]
         public ActionResult ChangePassword([FromBody] ChangePasswordRequest request)
         {

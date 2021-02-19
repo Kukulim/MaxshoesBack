@@ -1,24 +1,19 @@
 using MaxshoesBack.AppDbContext;
 using MaxshoesBack.JwtAuth;
+using MaxshoesBack.Services.EmailService;
+using MaxshoesBack.Services.NotificationServices;
 using MaxshoesBack.Services.UserServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using MaxshoesBack.Services.EmailService;
+using System;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace MaxshoesBack
 {
@@ -36,7 +31,8 @@ namespace MaxshoesBack
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<ApplicationDbContext>(options => {
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MaxDb"));
             });
@@ -45,6 +41,7 @@ namespace MaxshoesBack
             services.AddSingleton(mailConfigSection);
 
             services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<INotificationServices, NotificationServices>();
             services.AddSingleton<IJwtAuthManager, JwtAuthManager>();
 
             var jwtTokenConfig = Configuration.GetSection("jwtTokenConfig").Get<JwtTokenConfig>();
