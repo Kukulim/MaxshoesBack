@@ -56,7 +56,7 @@ namespace MaxshoesBack.Controllers
                     UserName = request.UserName,
                     Password = BC.HashPassword(request.Password),
                     Email = request.Email,
-                    Contact = new Contact()
+                    Contact = new Contact { Id = Guid.NewGuid().ToString() }
                 };
                 _userService.Create(newUser);
                 _userService.Complete();
