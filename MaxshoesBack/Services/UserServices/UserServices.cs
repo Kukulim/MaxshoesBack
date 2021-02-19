@@ -1,5 +1,6 @@
 ﻿using MaxshoesBack.AppDbContext;
 using MaxshoesBack.Models.UserModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace MaxshoesBack.Services.UserServices
 
         public User Create(User user)
         {
-            context.Add(user);
+            context.Users.Add(user);
             return (user);
         }
 
@@ -45,7 +46,7 @@ namespace MaxshoesBack.Services.UserServices
 
         public User GetUserByEmail(string userEmail)
         {
-            return context.Users.Where(r => r.Email == userEmail).FirstOrDefault();
+            return context.Users.Where(r => r.Email == userEmail).Include(a => a.Notifications).FirstOrDefault();
         }
 
         public bool IsAnExistingUser(string userName, string UserEmail)

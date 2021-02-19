@@ -1,9 +1,7 @@
 ﻿using MaxshoesBack.AppDbContext;
 using MaxshoesBack.Models.UserModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MaxshoesBack.Services.NotificationServices
 {
@@ -15,6 +13,7 @@ namespace MaxshoesBack.Services.NotificationServices
         {
             this.context = context;
         }
+
         public void Complete()
         {
             context.SaveChanges();
@@ -28,7 +27,7 @@ namespace MaxshoesBack.Services.NotificationServices
 
         public void Delete(string id)
         {
-            var toDelete = context.Notifications.Where(u => u.Id==id).FirstOrDefault();
+            var toDelete = context.Notifications.Where(u => u.Id == id).FirstOrDefault();
             context.Notifications.Remove(toDelete);
         }
 
