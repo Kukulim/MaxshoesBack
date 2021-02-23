@@ -27,5 +27,17 @@ namespace MaxshoesBack.Controllers
             var NotificationsList = _notificationServices.GetAll();
             return Ok(NotificationsList);
         }
+        [Authorize(Roles = UserRoles.Customer)]
+        [HttpPost("createnotification")]
+        public ActionResult CreateNotification([FromBody] Notification request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model state is not valid.");
+            }
+            _notificationServices.Create(request);
+            _notificationServices.Complete();
+            return Ok(request);
+        }
     }
 }
