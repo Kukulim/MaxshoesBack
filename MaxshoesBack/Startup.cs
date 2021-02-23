@@ -74,6 +74,8 @@ namespace MaxshoesBack
                     Convert.ToBase64String(Encoding.UTF8.GetBytes($"api:{mailConfigSection.MailgunKey}")));
             });
 
+            services.AddSwaggerGen();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -92,6 +94,13 @@ namespace MaxshoesBack
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
