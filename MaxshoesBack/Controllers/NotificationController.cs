@@ -1,10 +1,13 @@
 ﻿using MaxshoesBack.Models.UserModels;
+using MaxshoesBack.Services.EmailService;
 using MaxshoesBack.Services.NotificationServices;
+using MaxshoesBack.Services.UserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace MaxshoesBack.Controllers
 {
@@ -13,10 +16,14 @@ namespace MaxshoesBack.Controllers
     public class NotificationController : ControllerBase
     {
         private readonly INotificationServices _notificationServices;
+        private readonly IUserServices _userService;
+        private readonly IEmailService _emailSender;
 
-        public NotificationController(INotificationServices notificationServices)
+        public NotificationController(INotificationServices notificationServices, IUserServices userService, IEmailService emailSender)
         {
             _notificationServices = notificationServices;
+            _userService = userService;
+            _emailSender = emailSender;
         }
 
         [Authorize(Roles = UserRoles.Employee)]
@@ -42,12 +49,15 @@ namespace MaxshoesBack.Controllers
 
         [HttpPost("editnotification")]
         [Authorize(Roles = UserRoles.Employee)]
-        public ActionResult EditNotification([FromBody] Notification request)
+        public async Task<ActionResult> EditNotification([FromBody] Notification request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
+            var UserToSend = _userService.GetUserByID(request.UserId);
+
+            await _emailSender.SendEmailAsync(UserToSend.Email, "The notification status has changed", "<h1>Hello from Max Shoes</h1>" + $"<p> The notification that id ={request.Id} status has changed</p> <p>Please check your account on our site.</p>");
             _notificationServices.Edit(request);
             _notificationServices.Complete();
             return Ok(request);

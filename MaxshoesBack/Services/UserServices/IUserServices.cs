@@ -12,7 +12,7 @@ namespace MaxshoesBack.Services.UserServices
         public User Create(User user);
 
         User GetUserByEmail(string userEmail);
-
+        User GetUserByID(string id);
         User Edit(User user);
 
         void Delete(User user);

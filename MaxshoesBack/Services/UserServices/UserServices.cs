@@ -49,6 +49,11 @@ namespace MaxshoesBack.Services.UserServices
             return context.Users.Where(r => r.Email == userEmail).Include(a => a.Notifications).FirstOrDefault();
         }
 
+        public User GetUserByID(string id)
+        {
+            return context.Users.Where(r => r.Id == id).FirstOrDefault();
+        }
+
         public bool IsAnExistingUser(string userName, string UserEmail)
         {
             var user = context.Users.Where(user => user.UserName == userName || user.Email == UserEmail).FirstOrDefault();
