@@ -50,7 +50,7 @@ namespace MaxshoesBack.Controllers
             }
             _notificationServices.Edit(request);
             _notificationServices.Complete();
-            return Ok();
+            return Ok(request);
         }
 
         [Authorize]
@@ -75,7 +75,7 @@ namespace MaxshoesBack.Controllers
                         file.CopyTo(stream);
                     }
 
-                    return Ok(new { dbPath });
+                    return Ok(new { fileNameToInsert });
                 }
                 else
                 {
@@ -88,6 +88,17 @@ namespace MaxshoesBack.Controllers
             }
         }
 
-
+        [HttpGet("DownloadFile/{name}")]
+        public IActionResult Download(string name)
+        {
+            var path = @"E:/Nauka/Max/MaxshoesBack/MaxshoesBack/Resources/Notifications/" + name;
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                stream.CopyTo(memory);
+            }
+            memory.Position = 0;
+            return File(memory, "text/plain",Path.GetFileName(path));
+        }
     }
 }
