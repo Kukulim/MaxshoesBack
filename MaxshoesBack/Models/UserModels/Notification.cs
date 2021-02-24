@@ -14,5 +14,7 @@ namespace MaxshoesBack.Models.UserModels
         public string Response { get; set; }
         public DateTime CreatedAt { get; set; }
         public Status Status { get; set; }
+
+        public string FileUrl { get; set; }
     }
 }
