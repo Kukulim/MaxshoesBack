@@ -39,5 +39,17 @@ namespace MaxshoesBack.Controllers
             _notificationServices.Complete();
             return Ok(request);
         }
+        [HttpPost("editnotification")]
+        [Authorize(Roles = UserRoles.Employee)]
+        public ActionResult EditNotification([FromBody] Notification request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            _notificationServices.Edit(request);
+            _notificationServices.Complete();
+            return Ok();
+        }
     }
 }
