@@ -39,9 +39,23 @@ namespace MaxshoesBack.Services.UserServices
             return user;
         }
 
+        public void EditEmployee(User user)
+        {
+            var toEditEmployee = context.Users.Where(r => r.Id == user.Id).FirstOrDefault();
+            toEditEmployee.Email = user.Email;
+            toEditEmployee.Password = user.Password;
+            toEditEmployee.UserName = user.UserName;
+            toEditEmployee.Contact = user.Contact;
+        }
+
         public List<User> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+        public List<User> GetAllEmployee()
+        {
+            return context.Users.Where(r => r.Role == UserRoles.Employee).ToList();
         }
 
         public User GetUserByEmail(string userEmail)
