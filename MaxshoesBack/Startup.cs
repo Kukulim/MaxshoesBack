@@ -34,6 +34,8 @@ namespace MaxshoesBack
         {
             services.AddControllersWithViews();
 
+            services.AddHealthChecks();
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(
@@ -122,6 +124,7 @@ namespace MaxshoesBack
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/healthcheck");
                 endpoints.MapControllers();
             });
         }
