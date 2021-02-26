@@ -32,13 +32,13 @@ namespace MaxshoesBack.Controllers
             _emailSender = emailSender;
             _configuration = configuration;
         }
-        [AllowAnonymous]
-        [HttpGet("user")]
-        public ActionResult GetCurrentUser([FromBody] LoginRequest request)
-        {
-            var CurrentUser = _userService.GetUserByEmail(request.Email);
-            return Ok(CurrentUser);
-        }
+        //[AllowAnonymous]
+        //[HttpGet("user")]
+        //public ActionResult GetCurrentUser([FromBody] LoginRequest request)
+        //{
+        //    var CurrentUser = _userService.GetUserByEmail(request.Email);
+        //    return Ok(CurrentUser);
+        //}
 
         [AllowAnonymous]
         [HttpPost("register")]

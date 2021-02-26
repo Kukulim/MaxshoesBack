@@ -36,7 +36,7 @@ namespace MaxshoesBack.Controllers
         }
 
         [HttpPost("createemployee")]
-        public ActionResult Login([FromBody] User request)
+        public ActionResult CreateEmployee([FromBody] User request)
         {
             if (!ModelState.IsValid)
             {

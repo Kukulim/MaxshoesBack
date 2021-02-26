@@ -45,6 +45,7 @@ namespace MaxshoesBack
 
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<INotificationServices, NotificationServices>();
+
             services.AddSingleton<IJwtAuthManager, JwtAuthManager>();
 
             var jwtTokenConfig = Configuration.GetSection("jwtTokenConfig").Get<JwtTokenConfig>();
@@ -69,6 +70,8 @@ namespace MaxshoesBack
                     ClockSkew = TimeSpan.FromMinutes(1)
                 };
             });
+
+            services.AddHostedService<JwtRefreshTokenCache>();
 
             services.AddHttpClient<IEmailService, MailgunEmailService>(cfg =>
             {
