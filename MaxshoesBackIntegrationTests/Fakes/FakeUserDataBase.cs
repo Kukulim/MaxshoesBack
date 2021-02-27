@@ -20,7 +20,7 @@ namespace MaxshoesBackIntegrationTests.Fakes
 
         public void Complete()
         {
-            throw new NotImplementedException();
+            //Empty
         }
 
         public User Create(User user)
@@ -42,13 +42,14 @@ namespace MaxshoesBackIntegrationTests.Fakes
             return toEdit;
         }
 
-        public void EditEmployee(User user)
+        public User EditEmployee(User user)
         {
             var toEditEmployee = Users.Where(r => r.Id == user.Id).FirstOrDefault();
             toEditEmployee.Email = user.Email;
             toEditEmployee.Password = user.Password;
             toEditEmployee.UserName = user.UserName;
             toEditEmployee.Contact = user.Contact;
+            return toEditEmployee;
         }
 
         public List<User> GetAll()

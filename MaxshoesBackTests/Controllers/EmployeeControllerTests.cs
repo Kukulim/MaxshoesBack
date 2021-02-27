@@ -87,7 +87,7 @@ namespace MaxshoesBackTests.Controllers
         }
 
         [Fact]
-        public void EditEmployee_ActionExecutes_ReturnsOk()
+        public void EditEmployee_ActionExecutes_ReturnsOkObject()
         {
 
             var result = _controller.EditEmployee(new User
@@ -100,7 +100,7 @@ namespace MaxshoesBackTests.Controllers
                 Role = UserRoles.Employee,
                 Contact = new Contact()
             }); ;
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<OkObjectResult>(result);
         }
 
         [Fact]

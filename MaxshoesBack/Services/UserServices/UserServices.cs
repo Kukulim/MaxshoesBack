@@ -35,17 +35,18 @@ namespace MaxshoesBack.Services.UserServices
 
         public User Edit(User user)
         {
-            context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.Entry(user).State = EntityState.Modified;
             return user;
         }
 
-        public void EditEmployee(User user)
+        public User EditEmployee(User user)
         {
             var toEditEmployee = context.Users.Where(r => r.Id == user.Id).FirstOrDefault();
             toEditEmployee.Email = user.Email;
             toEditEmployee.Password = user.Password;
             toEditEmployee.UserName = user.UserName;
             toEditEmployee.Contact = user.Contact;
+            return toEditEmployee;
         }
 
         public List<User> GetAll()

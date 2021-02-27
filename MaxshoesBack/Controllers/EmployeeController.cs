@@ -1,16 +1,7 @@
-﻿using MaxshoesBack.JwtAuth;
-using MaxshoesBack.Models.AccountModels;
-using MaxshoesBack.Models.UserModels;
-using MaxshoesBack.Services.EmailService;
+﻿using MaxshoesBack.Models.UserModels;
 using MaxshoesBack.Services.UserServices;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using BC = BCrypt.Net.BCrypt;
 
 namespace MaxshoesBack.Controllers
@@ -26,7 +17,6 @@ namespace MaxshoesBack.Controllers
         {
             _userService = userService;
         }
-
 
         [HttpGet("getallemployee")]
         public ActionResult GetEmployees()
@@ -47,7 +37,6 @@ namespace MaxshoesBack.Controllers
             _userService.Create(request);
             _userService.Complete();
             return Ok();
-   
         }
 
         [HttpPost("editemployee")]
@@ -57,9 +46,9 @@ namespace MaxshoesBack.Controllers
             {
                 return BadRequest();
             }
-            _userService.EditEmployee(request);
+            var editedEmployee = _userService.EditEmployee(request);
             _userService.Complete();
-            return Ok();
+            return Ok(editedEmployee);
         }
     }
 }

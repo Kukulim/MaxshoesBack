@@ -16,7 +16,7 @@ namespace MaxshoesBack.Services.UserServices
         User GetUserByID(string id);
         User Edit(User user);
 
-        void EditEmployee(User user);
+        User EditEmployee(User user);
 
         void Delete(User user);
 

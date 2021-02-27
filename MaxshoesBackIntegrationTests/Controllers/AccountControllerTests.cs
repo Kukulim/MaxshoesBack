@@ -115,5 +115,61 @@ namespace MaxshoesBackIntegrationTests.Controllers
             Assert.Equal(HttpStatusCode.OK, logoutResponse.StatusCode);
             Assert.False(jwtAuthManager.UsersRefreshTokensReadOnlyDictionary.ContainsKey(loginResult.RefreshToken));
         }
+
+        [Fact]
+        public async Task ShouldCorrectlyRefreshToken()
+        {
+            const string userName = "Employee1";
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name,userName),
+                new Claim(ClaimTypes.Role, UserRoles.Employee)
+            };
+            var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
+            var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult.AccessToken);
+            var refreshRequest = new RefreshTokenRequest
+            {
+                RefreshToken = jwtResult.RefreshToken.TokenString
+            };
+            var response = await _httpClient.PostAsync("api/account/refresh-token",
+                new StringContent(JsonConvert.SerializeObject(refreshRequest), Encoding.UTF8, MediaTypeNames.Application.Json));
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<LoginResult>(responseContent);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var refreshToken2 = jwtAuthManager.UsersRefreshTokensReadOnlyDictionary.GetValueOrDefault(result.RefreshToken);
+            Assert.Equal(refreshToken2.TokenString, result.RefreshToken);
+            Assert.NotEqual(refreshToken2.TokenString, jwtResult.RefreshToken.TokenString);
+            Assert.NotEqual(jwtResult.AccessToken, result.AccessToken);
+        }
+
+
+        [Fact]
+        public async Task ShouldNotAllowToRefreshTokenWhenRefreshTokenIsExpired()
+        {
+            const string userName = "Employee1";
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name,userName),
+                new Claim(ClaimTypes.Role, UserRoles.Employee)
+            };
+            var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
+            var jwtTokenConfig = _serviceProvider.GetRequiredService<JwtTokenConfig>();
+            var jwtResult1 = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.RefreshTokenExpiration - 1));
+            var jwtResult2 = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult2.AccessToken); 
+            var refreshRequest = new RefreshTokenRequest
+            {
+                RefreshToken = jwtResult1.RefreshToken.TokenString
+            };
+            var response = await _httpClient.PostAsync("api/account/refresh-token",
+                new StringContent(JsonConvert.SerializeObject(refreshRequest), Encoding.UTF8, MediaTypeNames.Application.Json));
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            Assert.Equal("Invalid token", responseContent);
+        }
     }
 }
