@@ -50,7 +50,7 @@ namespace MaxshoesBack.Services.UserServices
 
         public List<User> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Users.ToList();
         }
 
         public List<User> GetAllEmployee()
