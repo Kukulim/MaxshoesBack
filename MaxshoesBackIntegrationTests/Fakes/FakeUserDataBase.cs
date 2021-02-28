@@ -131,7 +131,7 @@ namespace MaxshoesBackIntegrationTests.Fakes
                     Id = "37846734-172e-4149-8cec-6f43d1eb3f61",
                     UserName = "Employee2",
                     IsEmailConfirmed = true,
-                    Email = "Employee1@test.pl",
+                    Email = "Employee2@test.pl",
                     Password = BC.HashPassword("Employee2"),
                     Role = UserRoles.Employee,
                     Contact = new Contact

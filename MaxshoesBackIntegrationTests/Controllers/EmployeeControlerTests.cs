@@ -165,7 +165,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
 
         }
         [Fact]
-        public async Task CreateEmployees_ReturnsEditedEmployeeForMaxShopowner()
+        public async Task EditEmployee_ReturnsEditedEmployeeForMaxShopowner()
         {
             var config = InitConfiguration();
             var credentials = new LoginRequest
@@ -184,8 +184,8 @@ namespace MaxshoesBackIntegrationTests.Controllers
             Assert.True(jwtAuthManager.UsersRefreshTokensReadOnlyDictionary.ContainsKey(loginResult.RefreshToken));
 
 
-            var orgilanUser = _testHostFixture.FakeUserDataBase.Users.Where(u => u.Id == "37846734-172e-4149-8cec-6f43d1eb3f60").FirstOrDefault();
-            var UserToEdit = orgilanUser;
+            var orgilanUserEmail = _testHostFixture.FakeUserDataBase.Users.Where(u => u.Id == "37846734-172e-4149-8cec-6f43d1eb3f60").FirstOrDefault().Email;
+            var UserToEdit = _testHostFixture.FakeUserDataBase.Users.Where(u => u.Id == "37846734-172e-4149-8cec-6f43d1eb3f60").FirstOrDefault();
             UserToEdit.Email = "newEmailAdress";
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, loginResult.AccessToken);
@@ -193,8 +193,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
             var getemployee = await getemployeeResponse.Content.ReadAsStringAsync();
             var getEmployeeResult = JsonConvert.DeserializeObject<User>(getemployee);
 
-            Assert.NotEqual(getEmployeeResult, orgilanUser);
-            Assert.Equal(UserToEdit.Email, getEmployeeResult.Email);
+            Assert.NotEqual(orgilanUserEmail, getEmployeeResult.Email);
         }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration.Json;
 using MaxshoesBackIntegrationTests.Fakes;
 using Microsoft.Extensions.DependencyInjection;
 using MaxshoesBack.Services.UserServices;
+using MaxshoesBack.Services.NotificationServices;
 
 namespace MaxshoesBackIntegrationTests
 {
@@ -18,18 +19,23 @@ namespace MaxshoesBackIntegrationTests
         public IServiceProvider ServiceProvider { get; }
 
         public FakeUserDataBase FakeUserDataBase { get; }
+        public FakeNotyficationDataBase FakeNotyficationDataBase { get; set; }
 
         public TestHostFixture()
         {
             FakeUserDataBase = FakeUserDataBase.WithDefaultUsers();
+            FakeNotyficationDataBase = FakeNotyficationDataBase.WithDefaultNotifications();
 
             var builder = Program.CreateHostBuilder(null)
                 .ConfigureWebHost(webHost =>
                 {
                     webHost.UseTestServer();
                     webHost.UseEnvironment("Test");
-                    webHost.ConfigureTestServices(services =>
-                        services.AddSingleton<IUserServices>(FakeUserDataBase));
+                    webHost.ConfigureTestServices(services => {
+                        services.AddSingleton<IUserServices>(FakeUserDataBase);
+                        services.AddSingleton<INotificationServices>(FakeNotyficationDataBase);
+                    }) ;
+
                 });
 
 
