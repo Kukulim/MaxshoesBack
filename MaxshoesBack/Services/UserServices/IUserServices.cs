@@ -10,10 +10,13 @@ namespace MaxshoesBack.Services.UserServices
         public List<User> GetAll();
 
         public User Create(User user);
+
         public List<User> GetAllEmployee();
 
         User GetUserByEmail(string userEmail);
+
         User GetUserByID(string id);
+
         User Edit(User user);
 
         User EditEmployee(User user);

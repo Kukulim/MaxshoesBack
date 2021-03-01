@@ -1,15 +1,13 @@
-using System;
-using System.Net.Http;
 using MaxshoesBack;
+using MaxshoesBack.Services.NotificationServices;
+using MaxshoesBack.Services.UserServices;
+using MaxshoesBackIntegrationTests.Fakes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration.Json;
-using MaxshoesBackIntegrationTests.Fakes;
 using Microsoft.Extensions.DependencyInjection;
-using MaxshoesBack.Services.UserServices;
-using MaxshoesBack.Services.NotificationServices;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Net.Http;
 
 namespace MaxshoesBackIntegrationTests
 {
@@ -31,13 +29,12 @@ namespace MaxshoesBackIntegrationTests
                 {
                     webHost.UseTestServer();
                     webHost.UseEnvironment("Test");
-                    webHost.ConfigureTestServices(services => {
+                    webHost.ConfigureTestServices(services =>
+                    {
                         services.AddSingleton<IUserServices>(FakeUserDataBase);
                         services.AddSingleton<INotificationServices>(FakeNotyficationDataBase);
-                    }) ;
-
+                    });
                 });
-
 
             var host = builder.Start();
             ServiceProvider = host.Services;

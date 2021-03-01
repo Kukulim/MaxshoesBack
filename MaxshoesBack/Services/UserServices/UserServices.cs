@@ -1,7 +1,6 @@
 ﻿using MaxshoesBack.AppDbContext;
 using MaxshoesBack.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

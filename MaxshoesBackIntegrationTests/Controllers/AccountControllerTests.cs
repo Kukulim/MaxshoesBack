@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,7 +15,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-
 
 namespace MaxshoesBackIntegrationTests.Controllers
 {
@@ -39,6 +37,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
             _httpClient = _testHostFixture.Client;
             _serviceProvider = _testHostFixture.ServiceProvider;
         }
+
         [Fact]
         public async Task ShouldExpect401WhenLoginWithInvalidCredentials()
         {
@@ -51,6 +50,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
                 new StringContent(JsonConvert.SerializeObject(credentials), Encoding.UTF8, MediaTypeNames.Application.Json));
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
+
         [Fact]
         public async Task ShouldReturnCorrectResponseForSuccessLogin()
         {
@@ -63,6 +63,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
                 new StringContent(JsonConvert.SerializeObject(credentials), Encoding.UTF8, MediaTypeNames.Application.Json));
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
         [Fact]
         public async Task ShouldReturnCorrectResponseForSuccessMaxLogin()
         {
@@ -89,11 +90,10 @@ namespace MaxshoesBackIntegrationTests.Controllers
             Assert.Equal(UserRoles.MaxShopOwner, principal.FindFirst(ClaimTypes.Role).Value);
             Assert.NotNull(jwtSecurityToken);
         }
-        [Fact]
 
+        [Fact]
         public async Task MaxShouldBeAbleToLogout()
         {
-
             var config = InitConfiguration();
             var credentials = new LoginRequest
             {
@@ -145,7 +145,6 @@ namespace MaxshoesBackIntegrationTests.Controllers
             Assert.NotEqual(jwtResult.AccessToken, result.AccessToken);
         }
 
-
         [Fact]
         public async Task ShouldNotAllowToRefreshTokenWhenRefreshTokenIsExpired()
         {
@@ -160,7 +159,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
             var jwtResult1 = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.RefreshTokenExpiration - 1));
             var jwtResult2 = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult2.AccessToken); 
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult2.AccessToken);
             var refreshRequest = new RefreshTokenRequest
             {
                 RefreshToken = jwtResult1.RefreshToken.TokenString

@@ -1,13 +1,9 @@
 ﻿using MaxshoesBack.JwtAuth;
 using MaxshoesBack.Models.UserModels;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MaxshoesBackIntegrationTests.JwtAuth
@@ -20,7 +16,6 @@ namespace MaxshoesBackIntegrationTests.JwtAuth
         public JwtAuthManagerTests()
         {
             _serviceProvider = _testHostFixture.ServiceProvider;
-
         }
 
         [Fact]
@@ -31,6 +26,7 @@ namespace MaxshoesBackIntegrationTests.JwtAuth
             Assert.Equal(20, jwtConfig.AccessTokenExpiration);
             Assert.Equal(60, jwtConfig.RefreshTokenExpiration);
         }
+
         [Fact]
         public void ShouldRotateRefreshToken()
         {

@@ -7,7 +7,6 @@ namespace MaxshoesBack.Services.EmailService
 {
     public class MailgunEmailService : IEmailService
     {
-
         public MailgunEmailService(HttpClient mailgunHttpClient, MailConfigSection mailConfigSection, ILogger<MailgunEmailService> logger)
         {
             this.mailgunHttpClient = mailgunHttpClient;

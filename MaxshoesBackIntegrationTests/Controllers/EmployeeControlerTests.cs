@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -39,6 +38,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
             _httpClient = _testHostFixture.Client;
             _serviceProvider = _testHostFixture.ServiceProvider;
         }
+
         [Fact]
         public async Task GetEmployees_ReturnsUnauthorizedWhenNotLogin()
         {
@@ -118,7 +118,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
             var getallemployee = await getallemployeeResponse.Content.ReadAsStringAsync();
             var getallEmployeeResult = JsonConvert.DeserializeObject<User[]>(getallemployee);
 
-            Assert.Equal(_testHostFixture.FakeUserDataBase.Users.Where( u=>u.Role==UserRoles.Employee).Count(), getallEmployeeResult.Length);
+            Assert.Equal(_testHostFixture.FakeUserDataBase.Users.Where(u => u.Role == UserRoles.Employee).Count(), getallEmployeeResult.Length);
         }
 
         [Fact]
@@ -162,8 +162,8 @@ namespace MaxshoesBackIntegrationTests.Controllers
             _testHostFixture.FakeUserDataBase.ResetDefaultUsers(useCustomIfAvailable: false);
 
             Assert.Equal(3, getallEmployeeResult.Length);
-
         }
+
         [Fact]
         public async Task EditEmployee_ReturnsEditedEmployeeForMaxShopowner()
         {
@@ -182,7 +182,6 @@ namespace MaxshoesBackIntegrationTests.Controllers
 
             var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
             Assert.True(jwtAuthManager.UsersRefreshTokensReadOnlyDictionary.ContainsKey(loginResult.RefreshToken));
-
 
             var orgilanUserEmail = _testHostFixture.FakeUserDataBase.Users.Where(u => u.Id == "37846734-172e-4149-8cec-6f43d1eb3f60").FirstOrDefault().Email;
             var UserToEdit = _testHostFixture.FakeUserDataBase.Users.Where(u => u.Id == "37846734-172e-4149-8cec-6f43d1eb3f60").FirstOrDefault();

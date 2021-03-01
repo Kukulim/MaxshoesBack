@@ -3,9 +3,7 @@ using MaxshoesBack.Models.UserModels;
 using MaxshoesBack.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace MaxshoesBackTests.Controllers
@@ -14,12 +12,11 @@ namespace MaxshoesBackTests.Controllers
     {
         private readonly Mock<IUserServices> _mockRepo;
         private readonly EmployeeController _controller;
+
         public EmployeeControllerTests()
         {
             _mockRepo = new Mock<IUserServices>();
             _controller = new EmployeeController(_mockRepo.Object);
-
-
         }
 
         [Fact]
@@ -45,7 +42,6 @@ namespace MaxshoesBackTests.Controllers
         [Fact]
         public void CreateEmployee_ActionExecutes_ReturnsOk()
         {
-
             var result = _controller.CreateEmployee(new User
             {
                 Id = "37846734-172e-4149-8cec-6f43d1eb3f60",
@@ -58,6 +54,7 @@ namespace MaxshoesBackTests.Controllers
             }); ;
             Assert.IsType<OkResult>(result);
         }
+
         [Fact]
         public void Create_InvalidModelState_CreateEmployeeNeverExecutes()
         {
@@ -83,13 +80,11 @@ namespace MaxshoesBackTests.Controllers
             };
             _controller.CreateEmployee(employee);
             _mockRepo.Verify(x => x.Create(It.IsAny<User>()), Times.Once);
-
         }
 
         [Fact]
         public void EditEmployee_ActionExecutes_ReturnsOkObject()
         {
-
             var result = _controller.EditEmployee(new User
             {
                 Id = "37846734-172e-4149-8cec-6f43d1eb3f60",

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -22,7 +21,6 @@ namespace MaxshoesBackIntegrationTests.Controllers
         private readonly TestHostFixture _testHostFixture = new TestHostFixture();
         private HttpClient _httpClient;
         private IServiceProvider _serviceProvider;
-
 
         public NotificationCotrollerTests()
         {
@@ -59,6 +57,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
             var logoutResponse = await _httpClient.GetAsync("api/notification/getall");
             Assert.Equal(HttpStatusCode.Forbidden, logoutResponse.StatusCode);
         }
+
         [Fact]
         public async Task GetAllNotifications_ReturnsSuccessForEmployeeRole()
         {
@@ -81,6 +80,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
             var logoutResponse = await _httpClient.GetAsync("api/notification/getall");
             Assert.Equal(HttpStatusCode.OK, logoutResponse.StatusCode);
         }
+
         [Fact]
         public async Task GetAllNotifications_ReturnsExpectedArrayOfNotificationsForEmployeeRole()
         {
@@ -143,6 +143,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
 
             Assert.NotEqual(4, _testHostFixture.FakeNotyficationDataBase.Notifications.Count());
         }
+
         [Fact]
         public async Task CreateNotification_ReturnsExpectedNotificationResaultForCustomerRole()
         {
@@ -202,7 +203,7 @@ namespace MaxshoesBackIntegrationTests.Controllers
             var NotificationToEdit = _testHostFixture.FakeNotyficationDataBase.Notifications.Where(n => n.Id == "97846734-172e-4149-8cec-6f43d1eb3f61").FirstOrDefault();
             NotificationToEdit.Title = "newTitle";
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, loginResult.AccessToken);            
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, loginResult.AccessToken);
 
             var getallnotificationResponse = await _httpClient.PostAsync("api/notification/editnotification", new StringContent(JsonConvert.SerializeObject(NotificationToEdit), Encoding.UTF8, MediaTypeNames.Application.Json));
             var getallnotifications = await getallnotificationResponse.Content.ReadAsStringAsync();

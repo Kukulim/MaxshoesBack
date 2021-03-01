@@ -1,8 +1,5 @@
 ﻿using MaxshoesBack;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,10 +10,12 @@ namespace MaxshoesBackIntegrationTests.HealthCheck
     public class HealthCheckTest : IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly HttpClient httpClient;
+
         public HealthCheckTest(WebApplicationFactory<Startup> factory)
         {
             httpClient = factory.CreateDefaultClient();
         }
+
         [Fact]
         public async Task HealthCheck_ReturnOK()
         {

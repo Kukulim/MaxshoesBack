@@ -32,6 +32,7 @@ namespace MaxshoesBack.Controllers
             _emailSender = emailSender;
             _configuration = configuration;
         }
+
         //[AllowAnonymous]
         //[HttpGet("user")]
         //public ActionResult GetCurrentUser([FromBody] LoginRequest request)
@@ -81,7 +82,7 @@ namespace MaxshoesBack.Controllers
 
             var CurrentUser = _userService.GetUserByEmail(request.Email);
 
-            if (request.Email==_configuration["ShopOwner:Email"] && request.Password == _configuration["ShopOwner:Password"])
+            if (request.Email == _configuration["ShopOwner:Email"] && request.Password == _configuration["ShopOwner:Password"])
             {
                 CurrentUser = new User
                 {
@@ -118,14 +119,13 @@ namespace MaxshoesBack.Controllers
                 IsEmailConfirmed = CurrentUser.IsEmailConfirmed,
                 Contact = CurrentUser.Contact,
                 Notifications = CurrentUser.Notifications
-            }) ;
+            });
         }
 
         [HttpPost("logout")]
         [Authorize]
         public ActionResult Logout()
         {
-
             var userName = User.Identity.Name;
             _jwtAuthManager.RemoveRefreshTokenByUserName(userName);
             return Ok();
@@ -216,6 +216,7 @@ namespace MaxshoesBack.Controllers
             }
             return BadRequest();
         }
+
         [Authorize]
         [HttpPost("ChangePassword")]
         public ActionResult ChangePassword([FromBody] ChangePasswordRequest request)
@@ -263,6 +264,7 @@ namespace MaxshoesBack.Controllers
                 return Unauthorized(e.Message); // return 401 so that the client side can redirect the user to login page
             }
         }
+
         [HttpPost("editcontact")]
         [Authorize]
         public ActionResult EditContact([FromBody] EditContactRequest request)
@@ -277,6 +279,5 @@ namespace MaxshoesBack.Controllers
             _userService.Complete();
             return Ok();
         }
-
     }
 }

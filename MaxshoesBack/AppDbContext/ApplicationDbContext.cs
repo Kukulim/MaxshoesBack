@@ -13,6 +13,7 @@ namespace MaxshoesBack.AppDbContext
 
         public DbSet<User> Users { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(b =>
@@ -40,7 +41,7 @@ namespace MaxshoesBack.AppDbContext
                     HouseNumber = 45,
                     Street = "Zielona"
                 });
-            }); 
+            });
             modelBuilder.Entity<User>(c =>
             {
                 c.HasData(new User

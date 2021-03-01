@@ -108,7 +108,7 @@ namespace MaxshoesBack.Controllers
                 stream.CopyTo(memory);
             }
             memory.Position = 0;
-            return File(memory, "text/plain",Path.GetFileName(path));
+            return File(memory, "text/plain", Path.GetFileName(path));
         }
     }
 }
